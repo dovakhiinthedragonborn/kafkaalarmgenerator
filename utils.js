@@ -40,7 +40,7 @@ export const parseArguments = (argv) => {
     const arg = argv[i];
     if (arg.startsWith("--")) {
       const [key, value] = arg.substring(2).split("=");
-      args[key] = value || false; // If there's no value, set the key to true
+      args[key] = value || false;
     }
   }
   return args;
