@@ -9,17 +9,25 @@ import { config } from "dotenv";
 
 config();
 
-const DEFAULT_TASK_NAME = process.env.DEFAULT_TASK_NAMES.split(",") ?? [
-  "SURVEILLANCE",
-];
-const DEFAULT_SITE_NAMES = process.env.DEFAULT_SITE_NAMES.split(",") ?? [
-  "Mubadala Tower",
-  "Abu Dhabi Mall",
-  "Al Reem Mall",
-  "Yas Island Mall",
-  "Al Wadha Mall",
-  "Yas Marina Circuit",
-];
+const DEFAULT_DEVICE_IDS = process.env.DEFAULT_DEVICE_IDS
+  ? process.env.DEFAULT_DEVICE_IDS.split(",")
+  : ["635140f4cc30cd00093a43be"];
+
+const DEFAULT_TASK_NAME = process.env.DEFAULT_TASK_NAMES
+  ? process.env.DEFAULT_TASK_NAMES.split(",")
+  : ["SURVEILLANCE"];
+
+const DEFAULT_SITE_NAMES = process.env.DEFAULT_SITE_NAMES
+  ? process.env.DEFAULT_SITE_NAMES.split(",")
+  : [
+      "Mubadala Tower",
+      "Abu Dhabi Mall",
+      "Al Reem Mall",
+      "Yas Island Mall",
+      "Al Wadha Mall",
+      "Yas Marina Circuit",
+    ];
+
 const originTime = new Date().toISOString();
 
 try {
@@ -33,6 +41,9 @@ try {
   const siteNames = arguements.sites
     ? arguements.sites.split(",")
     : DEFAULT_SITE_NAMES;
+  const deviceIDs = arguements.deviceIDs
+    ? arguements.deviceIDs.split(",")
+    : DEFAULT_DEVICE_IDS;
 
   const messages = [];
 
@@ -50,14 +61,17 @@ try {
 
     const lastModificationTime = hitTime;
 
+    const taskName = taskNames[Math.floor(Math.random() * taskNames.length)];
+    const deviceId = deviceIDs[Math.floor(Math.random() * deviceIDs.length)];
+
     const newMessage = {
       id,
       taskID,
-      taskName: taskNames[Math.floor(Math.random() * taskNames.length)],
+      taskName,
       hitTime,
       siteName: siteNames[Math.floor(Math.random() * siteNames.length)],
       lastModificationTime,
-      deviceId: SampleMessage.deviceId,
+      deviceId,
       location: SampleMessage.location,
       raw: JSON.stringify({
         id,
@@ -70,7 +84,7 @@ try {
           hitRecordId: generateRandomID(19, false),
           fpHost: SampleMessage.raw.attrs.fpHost,
           confirmation: { status: "CORRECT" },
-          deviceId: SampleMessage.raw.attrs.deviceId,
+          deviceId,
           sceneImageUrl: SampleMessage.raw.attrs.sceneImageUrl,
           hitCategoryType: SampleMessage.raw.attrs.hitCategoryType,
           auditStatus: SampleMessage.raw.attrs.auditStatus,
@@ -113,7 +127,7 @@ try {
             hit_global_picture_uri:
               SampleMessage.raw.attrs.surveillanceContent
                 .hit_global_picture_uri,
-            device_id: SampleMessage.raw.attrs.surveillanceContent.device_id,
+            device_id: deviceId,
             frames: [],
             rec_smiley_face: 0,
             hit_timestamp: 1627318253,
@@ -222,9 +236,9 @@ try {
 
   messages.sort((a, b) => new Date(b.hitTime) - new Date(a.hitTime));
 
-  await publishKafkaMessage(
-    messages.map((x) => ({ value: JSON.stringify(x) }))
-  );
+  // await publishKafkaMessage(
+  //   messages.map((x) => ({ value: JSON.stringify(x) }))
+  // );
 
   messages.forEach((message) => {
     fs.appendFileSync(

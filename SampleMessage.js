@@ -18,7 +18,7 @@ export default {
       hitRecordId: "1666171087842928065",
       fpHost: "172.31.1.10",
       confirmation: { status: "CORRECT" },
-      deviceId: "62a62b32b2afb1000978a045",
+      deviceId: "635140f4cc30cd00093a43be",
       sceneImageUrl:
         "/image/v1/fusion/storage/eXRrdjEwMTkxOC1mdXNpb24vMDgyLzIwMjIvMTAvMjYvMTcvNTEvaGhycm0tM2YwYmU2YWQtMjQ4MS00MjZlLTkwMzctN2I1ZDQwMGE3M2RhLTE2NjY3Nzc4OTU4MTUtMTk4NTQ5MDk=",
       hitCategoryType: "SCENE_HIT",
@@ -56,7 +56,7 @@ export default {
         id: -9079256848778512943,
         hit_global_picture_uri:
           "/storage/v1/image?cluster_id=G42FP_1593399188&uri_base64=a3Y6Ly95dGt2LXJlcG9zaXRvcnktYnVpbGRlci8wNTQvMjAyMS8wNy8yNy8wMC81My9iN2hrei02YWE4OTQwNi03MTQ3LTQxMGQtOWIyNi01OGJjNjkzNzJmMzUtMTYyNzMxODM5NTQ4My01OTY1NDAzNjQ=",
-        device_id: "62a62b32b2afb1000978a045",
+        device_id: "635140f4cc30cd00093a43be",
         frames: [],
         rec_smiley_face: 0,
         hit_timestamp: 1627318253,
