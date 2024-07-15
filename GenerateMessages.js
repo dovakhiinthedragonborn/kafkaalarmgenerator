@@ -9,8 +9,10 @@ import { config } from "dotenv";
 
 config();
 
-const DEFAULT_TASK_NAME = process.env.DEFAULT_TASK_NAMES ?? ["SURVEILLANCE"];
-const DEFAULT_SITE_NAMES = process.env.DEFAULT_SITE_NAMES ?? [
+const DEFAULT_TASK_NAME = process.env.DEFAULT_TASK_NAMES.split(",") ?? [
+  "SURVEILLANCE",
+];
+const DEFAULT_SITE_NAMES = process.env.DEFAULT_SITE_NAMES.split(",") ?? [
   "Mubadala Tower",
   "Abu Dhabi Mall",
   "Al Reem Mall",
