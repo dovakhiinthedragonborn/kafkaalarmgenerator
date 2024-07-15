@@ -5,7 +5,19 @@ import {
   publishKafkaMessage,
   parseArguments,
 } from "./utils.js";
+import { config } from "dotenv";
 
+config();
+
+const DEFAULT_TASK_NAME = process.env.DEFAULT_TASK_NAMES ?? ["SURVEILLANCE"];
+const DEFAULT_SITE_NAMES = process.env.DEFAULT_SITE_NAMES ?? [
+  "Mubadala Tower",
+  "Abu Dhabi Mall",
+  "Al Reem Mall",
+  "Yas Island Mall",
+  "Al Wadha Mall",
+  "Yas Marina Circuit",
+];
 const originTime = new Date().toISOString();
 
 try {
@@ -13,19 +25,12 @@ try {
 
   const count = parseInt(arguements.count) || 1;
   const minutes = parseInt(arguements.minutes) || 120;
-  const taskNames = arguements.taskName
+  const taskNames = arguements.taskNames
     ? arguements.taskName.split(",")
-    : ["SURVEILLANCE"];
+    : DEFAULT_TASK_NAME;
   const siteNames = arguements.sites
     ? arguements.sites.split(",")
-    : [
-        "Al Reem Mall",
-        "Mubadala Tower",
-        "Abu Dhabi Mall",
-        "Yas Island Mall",
-        "Al Wadha Mall",
-        "Yas Marina Circuit",
-      ];
+    : DEFAULT_SITE_NAMES;
 
   const messages = [];
 
