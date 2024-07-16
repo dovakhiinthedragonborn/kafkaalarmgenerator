@@ -36,7 +36,7 @@ try {
   const count = parseInt(arguements.count) || 1;
   const minutes = parseInt(arguements.minutes) || 120;
   const taskNames = arguements.taskNames
-    ? arguements.taskName.split(",")
+    ? arguements.taskNames.split(",")
     : DEFAULT_TASK_NAME;
   const siteNames = arguements.sites
     ? arguements.sites.split(",")
@@ -236,9 +236,9 @@ try {
 
   messages.sort((a, b) => new Date(b.hitTime) - new Date(a.hitTime));
 
-  // await publishKafkaMessage(
-  //   messages.map((x) => ({ value: JSON.stringify(x) }))
-  // );
+  await publishKafkaMessage(
+    messages.map((x) => ({ value: JSON.stringify(x) }))
+  );
 
   messages.forEach((message) => {
     fs.appendFileSync(
