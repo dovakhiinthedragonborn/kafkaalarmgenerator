@@ -4,6 +4,7 @@ import {
   generateRandomID,
   publishKafkaMessage,
   parseArguments,
+  getRandomItem,
 } from "./utils.js";
 import { config } from "dotenv";
 
@@ -61,21 +62,21 @@ try {
 
     const lastModificationTime = hitTime;
 
-    const taskName = taskNames[Math.floor(Math.random() * taskNames.length)];
-    const deviceId = deviceIDs[Math.floor(Math.random() * deviceIDs.length)];
+    const taskName = getRandomItem(taskNames);
+    const deviceId = getRandomItem(deviceIDs);
 
     const newMessage = {
       id,
       taskID,
       taskName,
       hitTime,
-      siteName: siteNames[Math.floor(Math.random() * siteNames.length)],
+      siteName: getRandomItem(siteNames),
       lastModificationTime,
       deviceId,
       location: SampleMessage.location,
       raw: JSON.stringify({
         id,
-        type: taskNames[Math.floor(Math.random() * taskNames.length)],
+        type: getRandomItem(taskNames),
         hitTime,
         taskId: taskID,
         creationTime: hitTime,
@@ -240,12 +241,15 @@ try {
     messages.map((x) => ({ value: JSON.stringify(x) }))
   );
 
-  messages.forEach((message) => {
-    fs.appendFileSync(
-      "./PublishedMessages.log",
-      `[${originTime}] => ${JSON.stringify(message)}\n`
-    );
+  messages.forEach((message, key) => {
+    if (key != messages.length - 1)
+      fs.appendFileSync(
+        "./PublishedMessages.log",
+        `[${originTime}] => ${JSON.stringify(message)}\n`
+      );
   });
+
+  console.log(`Published ${messages.length - 1} message(s)`);
 } catch (error) {
   console.error(error);
   fs.appendFileSync("./Errors.log", `[${originTime}] => ${error}\n`);
