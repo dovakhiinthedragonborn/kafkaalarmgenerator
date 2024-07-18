@@ -51,6 +51,10 @@ const run = async () => {
       }
     },
   });
+
+  console.log("Done!");
+
+  await consumer.disconnect();
 };
 
 run().catch(console.error);

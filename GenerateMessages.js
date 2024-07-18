@@ -6,30 +6,14 @@ import {
   parseArguments,
   getRandomItem,
 } from "./utils.js";
+import {
+  DEFAULT_DEVICE_IDS,
+  DEFAULT_SITE_NAMES,
+  DEFAULT_TASK_NAME,
+} from "./Defaults.js";
 import { config } from "dotenv";
 
 config();
-
-const DEFAULT_DEVICE_IDS = process.env.DEFAULT_DEVICE_IDS
-  ? process.env.DEFAULT_DEVICE_IDS.split(",")
-  : ["635140f4cc30cd00093a43be"];
-
-const DEFAULT_TASK_NAME = process.env.DEFAULT_TASK_NAMES
-  ? process.env.DEFAULT_TASK_NAMES.split(",")
-  : ["SURVEILLANCE"];
-
-const DEFAULT_SITE_NAMES = process.env.DEFAULT_SITE_NAMES
-  ? process.env.DEFAULT_SITE_NAMES.split(",")
-  : [
-      "Mubadala Tower",
-      "Abu Dhabi Mall",
-      "Al Reem Mall",
-      "Yas Island Mall",
-      "Al Wadha Mall",
-      "Yas Marina Circuit",
-    ];
-
-const originTime = new Date().toISOString();
 
 try {
   const arguements = parseArguments(process.argv);
@@ -45,23 +29,20 @@ try {
   const deviceIDs = arguements.deviceIDs
     ? arguements.deviceIDs.split(",")
     : DEFAULT_DEVICE_IDS;
-
+  const originTime = arguements.originHitTime
+    ? new Date(arguements.originHitTime).toISOString()
+    : new Date().toISOString();
   const messages = [];
 
   for (let index = 0; index <= count; index++) {
     const id = generateRandomID(24, true);
     const taskID = generateRandomID(31, true);
-
     const hitFaceImageId = null;
-
     const faceImageId = `${generateRandomID(19, false)}@G42FP_1593399188`;
-
     const hitTime = new Date(
       new Date().setMinutes(new Date(originTime).getMinutes() + minutes * index)
     ).toISOString();
-
     const lastModificationTime = hitTime;
-
     const taskName = getRandomItem(taskNames);
     const deviceId = getRandomItem(deviceIDs);
 
@@ -245,14 +226,13 @@ try {
     if (key != messages.length - 1)
       fs.appendFileSync(
         "./PublishedMessages.log",
-        `[${originTime}] => ${JSON.stringify(message)}\n`
+        `[${originTime}] ===> ${JSON.stringify(message)}\n`,
+        "utf8"
       );
   });
 
   console.log(`Published ${messages.length - 1} message(s)`);
 } catch (error) {
   console.error(error);
-  fs.appendFileSync("./Errors.log", `[${originTime}] => ${error}\n`);
+  fs.appendFileSync("./Errors.log", `[${originTime}] ===> ${error}\n`, "utf8");
 }
-
-

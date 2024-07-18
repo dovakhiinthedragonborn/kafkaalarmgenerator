@@ -1,5 +1,5 @@
 # Use the official Node.js image as the base image for building the application
-FROM node:16 AS build
+FROM node:20 AS build
 
 # Set the working directory inside the container
 WORKDIR /usr/src/app
@@ -17,7 +17,7 @@ COPY . .
 # RUN npm run build
 
 # Use a lightweight Node.js image for the final stage
-FROM node:16-alpine
+FROM node:20-alpine3.19
 
 # Set the working directory inside the container
 WORKDIR /usr/src/app
