@@ -1,5 +1,10 @@
 import { Kafka } from "kafkajs";
 import { config } from "dotenv";
+import {
+  DEFAULT_DEVICE_IDS,
+  DEFAULT_SITE_NAMES,
+  DEFAULT_TASK_NAME,
+} from "./Defaults.js";
 
 config();
 
@@ -34,18 +39,64 @@ export const publishKafkaMessage = async (messages) => {
   await producer.disconnect();
 };
 
-export const parseArguments = (argv) => {
+export const parseArguements = (argv) => {
   const args = {};
   for (let i = 2; i < argv.length; i++) {
     const arg = argv[i];
     if (arg.startsWith("--")) {
       const [key, value] = arg.substring(2).split("=");
-      args[key] = value || false;
+      args[key] = value || true;
+    }
+    if (arg.startsWith("-")) {
+      const [key, value] = arg.substring(1).split("=");
+      args[key] = value || true;
     }
   }
+
   return args;
 };
 
 export const getRandomItem = (array) =>
   array[Math.floor(Math.random() * array.length)];
+
+export const getArguementsForGenerateMessage = (arguements) => {
+  const help = arguements.help || arguements.h;
+
+  const count = parseInt(arguements.count ?? arguements.c) || 1;
+  const minutes = parseInt(arguements.minutes ?? arguements.m) || 120;
+
+  const taskNames = arguements.taskNames
+    ? arguements.taskNames.split(",")
+    : arguements.t
+    ? arguements.t.split(",")
+    : DEFAULT_TASK_NAME;
+
+  const siteNames = arguements.sites
+    ? arguements.sites.split(",")
+    : arguements.s
+    ? arguements.s.split(",")
+    : DEFAULT_SITE_NAMES;
+
+  const deviceIDs = arguements.deviceIDs
+    ? arguements.deviceIDs.split(",")
+    : arguements.d
+    ? arguements.d.split(",")
+    : DEFAULT_DEVICE_IDS;
+
+  const originTime = arguements.originHitTime
+    ? new Date(arguements.originHitTime).toISOString()
+    : arguements.o
+    ? new Date(arguements.o).toISOString()
+    : new Date().toISOString();
+
+  return {
+    help,
+    deviceIDs,
+    taskNames,
+    siteNames,
+    originTime,
+    count: count > 0 ? count : 1,
+    minutes: minutes > 0 ? minutes : 120,
+  };
+};
 

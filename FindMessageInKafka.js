@@ -1,60 +1,77 @@
 import { Kafka } from "kafkajs";
 import { config } from "dotenv";
-import { parseArguments } from "./utils.js";
+import { parseArguements } from "./utils.js";
 
 config();
 
-let keys = null;
-let alarmIds = null;
+const findMessages = async () => {
+  let keys = null;
+  let alarmIds = null;
 
-const arguements = parseArguments(process.argv);
+  const arguements = parseArguements(process.argv);
 
-if (arguements.key) keys = arguements.key.split(",");
-if (arguements.alarmId) alarmIds = arguements.alarmId.split(",");
+  if (arguements.help || arguements.h)
+    return console.log(`
+    Usage: node .\\FindMessageInKafka.js.js [options]
+    Options:
+      -h, --help            Show help
+      -k, --key             Kafka Message Key to search by
+      -a, --alarmId         Alarm ID to search by
+    `);
 
-const TOPIC = process.env.TOPIC;
-const BROKERS = process.env.BROKERS;
+  if (arguements.key) keys = arguements.key.split(",");
+  else if (arguements.k) keys = arguements.k.split(",");
+  if (arguements.alarmId) alarmIds = arguements.alarmId.split(",");
+  else if (arguements.a) alarmIds = arguements.a.split(",");
+  const TOPIC = process.env.TOPIC;
+  const BROKERS = process.env.BROKERS;
 
-const kafka = new Kafka({
-  brokers: BROKERS.split(","),
-  clientId: "kafka-client",
-});
-const consumer = kafka.consumer({ groupId: "TEST__psimmysqltopicgroup__TEST" });
+  const kafka = new Kafka({
+    brokers: BROKERS.split(","),
+    clientId: "kafka-client",
+  });
+  const consumer = kafka.consumer({
+    groupId: "TEST__psimmysqltopicgroup__TEST",
+  });
 
-const run = async () => {
-  // Connecting the consumer
-  await consumer.connect();
+  const run = async () => {
+    // Connecting the consumer
+    await consumer.connect();
 
-  // Subscribing to the topic
-  await consumer.subscribe({ topic: TOPIC, fromBeginning: true });
+    // Subscribing to the topic
+    await consumer.subscribe({ topic: TOPIC, fromBeginning: true });
 
-  // Running the consumer to read messages
-  await consumer.run({
-    eachMessage: async ({ partition, message }) => {
-      if (keys && keys.includes(message.key))
-        console.log("Message Found by key!: ", {
-          key: message.key,
-          partition,
-          offset: message.offset,
-          value: message.value.toString(),
-        });
-
-      if (alarmIds) {
-        const alarm = JSON.parse(message.value);
-        if (alarmIds.includes(alarm?.id))
-          console.log("Message Found by alarm ID!: ", {
-            alarmId: alarm.id,
+    // Running the consumer to read messages
+    await consumer.run({
+      eachMessage: async ({ partition, message }) => {
+        if (keys && keys.includes(message.key))
+          console.log("Message Found by key!: ", {
+            key: message.key,
             partition,
             offset: message.offset,
             value: message.value.toString(),
           });
-      }
-    },
-  });
 
-  console.log("Done!");
+        if (alarmIds) {
+          const alarm = JSON.parse(message.value);
+          if (alarmIds.includes(alarm?.id))
+            console.log("Message Found by alarm ID!: ", {
+              alarmId: alarm.id,
+              partition,
+              offset: message.offset,
+              value: message.value.toString(),
+            });
+        }
+      },
+    });
 
-  await consumer.disconnect();
+    console.log("Done!");
+
+    await consumer.disconnect();
+  };
+
+  run().catch(console.error);
 };
 
-run().catch(console.error);
+await findMessages();
+
