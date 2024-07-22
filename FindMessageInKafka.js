@@ -1,5 +1,5 @@
-import { Kafka } from "kafkajs";
 import { config } from "dotenv";
+import { Kafka } from "kafkajs";
 import { parseArguements } from "./utils.js";
 
 config();
@@ -74,4 +74,3 @@ const findMessages = async () => {
 };
 
 await findMessages();
-

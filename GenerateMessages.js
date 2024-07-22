@@ -1,13 +1,12 @@
-import SampleMessage from "./SampleMessage.js";
-import fs from "fs";
-import {
-  getArguementsForGenerateMessage,
-  publishKafkaMessage,
-  generateRandomID,
-  parseArguements,
-  getRandomItem,
-} from "./utils.js";
 import { config } from "dotenv";
+import fs from "fs";
+import SampleMessage from "./SampleMessage.js";
+import {
+  generateRandomID,
+  getArguementsForGenerateMessage,
+  getRandomItem,
+  parseArguements,
+} from "./utils.js";
 
 config();
 
@@ -44,8 +43,8 @@ const generateAndPublishMessages = async () => {
         )
       ).toISOString();
       const lastModificationTime = hitTime;
-      const taskName = getRandomItem(taskNames);
-      const deviceId = getRandomItem(deviceIDs);
+      const taskName = taskNames.randomItem();
+      const deviceId = deviceIDs.randomItem();
 
       const newMessage = {
         id,

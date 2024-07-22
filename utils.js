@@ -1,5 +1,5 @@
-import { Kafka } from "kafkajs";
 import { config } from "dotenv";
+import { Kafka } from "kafkajs";
 import {
   DEFAULT_DEVICE_IDS,
   DEFAULT_SITE_NAMES,
@@ -59,6 +59,11 @@ export const parseArguements = (argv) => {
 export const getRandomItem = (array) =>
   array[Math.floor(Math.random() * array.length)];
 
+Array.prototype.randomItem = function () {
+  const randomIndex = Math.floor(Math.random() * this.length);
+  return this[randomIndex];
+};
+
 export const getArguementsForGenerateMessage = (arguements) => {
   const help = arguements.help || arguements.h;
 
@@ -99,4 +104,3 @@ export const getArguementsForGenerateMessage = (arguements) => {
     minutes: minutes > 0 ? minutes : 120,
   };
 };
-
