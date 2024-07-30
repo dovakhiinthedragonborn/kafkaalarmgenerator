@@ -6,6 +6,7 @@ import {
   getArguementsForGenerateMessage,
   getRandomItem,
   parseArguements,
+  publishKafkaMessage,
 } from "./utils.js";
 
 config();
@@ -220,7 +221,7 @@ const generateAndPublishMessages = async () => {
     messages.sort((a, b) => new Date(b.hitTime) - new Date(a.hitTime));
 
     await publishKafkaMessage(
-      messages.map((x) => ({ value: JSON.stringify(x) }))
+      messages.map((x, i) => ({ key: `${i}`, value: JSON.stringify(x) }))
     );
 
     messages.forEach((message, key) => {
@@ -228,7 +229,7 @@ const generateAndPublishMessages = async () => {
       if (key != messages.length - 1)
         fs.appendFileSync(
           "./logs/PublishedMessages.log",
-          `[${currentTime}] ===> ${JSON.stringify(message)}\n`
+          `[${currentTime}] ==> ${JSON.stringify(message)}\n`
         );
     });
 
@@ -238,7 +239,7 @@ const generateAndPublishMessages = async () => {
     console.error(error);
     fs.appendFileSync(
       "./logs/Errors.log",
-      `[${currentTime}] ===> ${error}\n`,
+      `[${currentTime}] ==> ${error}\n`,
       "utf8"
     );
   }

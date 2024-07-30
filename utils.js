@@ -30,6 +30,7 @@ export const generateRandomID = (length = 24, allowAlphabets = true) => {
 };
 
 export const publishKafkaMessage = async (messages) => {
+  console.log(TOPIC);
   const producer = kafka.producer();
   await producer.connect();
   await producer.send({

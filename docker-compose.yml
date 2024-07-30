@@ -1,8 +1,6 @@
-version: '3.8'
-
 services:
-  kafkacat:
-    image: generatekafkaalarms
+  generatekafkaalarms:
+    image: generatekafkaalarms:dev-0420.b04
     environment:
       BROKERS: '10.144.36.181:9092,10.144.36.132:9092,10.144.36.125:9092'
       TOPIC: 'event-alert-for-psim_from_mysql'
