@@ -1,33 +1,20 @@
-# Use the official Node.js image as the base image for building the application
-FROM node:20 AS build
+# Use a slim base image to reduce image size
+FROM node:16-slim
 
-# Set the working directory inside the container
-WORKDIR /usr/src/app
+# Create and set the working directory within the container
+WORKDIR /app
 
-# Copy the package.json and package-lock.json files
+# Copy package.json and package-lock.json (if available)
 COPY package*.json ./
 
-# Install the project dependencies
-RUN npm ci --only=production
+# Install dependencies
+RUN npm install
 
 # Copy the rest of the application code
 COPY . .
 
-# Build the application (if you have a build step)
-# RUN npm run build
+# Expose the port your application listens on (e.g., 3000)
+EXPOSE 3000
 
-# Use a lightweight Node.js image for the final stage
-FROM node:20-alpine3.19
-
-# Set the working directory inside the container
-WORKDIR /usr/src/app
-
-# Copy the built application from the build stage
-COPY --from=build /usr/src/app ./
-
-# Install production dependencies
-RUN npm ci --only=production
-
-
-# Define the command to open a shell
-CMD ["sh", "-c", "sleep infinity"]
+# Set the entrypoint to your desired script
+ENTRYPOINT ["node", "continuosMessages.js"]

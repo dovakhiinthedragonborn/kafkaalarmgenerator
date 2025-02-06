@@ -6,7 +6,8 @@ export default {
   hitTime: "2024-06-21 17:18:46",
   lastModificationTime: "2024-06-21T08:54:47Z",
   deviceId: "635140f4cc30cd00093a43be",
-  location: "+24.4178+54.4409/",
+
+  location: "+24.5222+54.674472/",
   raw: {
     id: "635c1cc92fb6180111295cb9",
     type: "SURVEILLANCE",

@@ -1,9 +1,10 @@
 services:
   generatekafkaalarms:
-    image: generatekafkaalarms:dev-0420.b04
+    image: generatekafkaalarms:dev-0420.b06
     environment:
       BROKERS: '10.144.36.181:9092,10.144.36.132:9092,10.144.36.125:9092'
-      TOPIC: 'event-alert-for-psim_from_mysql'
-      DEFAULT_TASK_NAMES: 'SURVEILLANCE'
-      DEFAULT_SITE_NAMES: 'Mubadala Tower,Abu Dhabi Mall,Al Reem Mall,Yas Island Mall,Al Wadha Mall,Yas Marina Circuit'
+      TOPIC: 'event-alert-for-psim'
+      DEFAULT_TASK_NAMES: 'yitu_behavior_event_FIGHT_composition_v1,yitu_behavior_event_CAR_WRONG_WAY_composition_v1,yitu_behavior_event_DOG_composition_v1'
       DEFAULT_DEVICE_IDS: '635140f4cc30cd00093a43be'
+      MESSAGES_IN_BURST: 2
+      SECONDS_PER_BURST: 5

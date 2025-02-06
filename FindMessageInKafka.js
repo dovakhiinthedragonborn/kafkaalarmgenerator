@@ -31,7 +31,7 @@ const findMessages = async () => {
     clientId: "kafka-client",
   });
   const consumer = kafka.consumer({
-    groupId: "TEST__psimmysqltopicgroup__TEST",
+    groupId: "event-alert-for-psim_180823",
   });
 
   const run = async () => {

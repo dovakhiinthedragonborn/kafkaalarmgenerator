@@ -1,6 +1,8 @@
 node_modules
 .env
-*.log
+logs
 Dockerfile
 docker-compose.yml
 .gitignore
+.vscode
+package-lock.json

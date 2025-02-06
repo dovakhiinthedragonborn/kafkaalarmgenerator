@@ -1,9 +1,11 @@
 import { config } from "dotenv";
 import { Kafka } from "kafkajs";
 import {
+  DEFAULT_TASK_NAME,
   DEFAULT_DEVICE_IDS,
   DEFAULT_SITE_NAMES,
-  DEFAULT_TASK_NAME,
+  DEFAULT_FACE_IMAGE_URIS,
+  DEFAULT_LOCATIONS,
 } from "./Defaults.js";
 
 config();
@@ -30,7 +32,6 @@ export const generateRandomID = (length = 24, allowAlphabets = true) => {
 };
 
 export const publishKafkaMessage = async (messages) => {
-  console.log(TOPIC);
   const producer = kafka.producer();
   await producer.connect();
   await producer.send({
@@ -89,19 +90,33 @@ export const getArguementsForGenerateMessage = (arguements) => {
     ? arguements.d.split(",")
     : DEFAULT_DEVICE_IDS;
 
+  const locations = arguements.locations
+    ? arguements.locations.split(",")
+    : arguements.l
+    ? arguements.l.split(",")
+    : DEFAULT_LOCATIONS;
+
   const originTime = arguements.originHitTime
     ? new Date(arguements.originHitTime).toISOString()
     : arguements.o
     ? new Date(arguements.o).toISOString()
     : new Date().toISOString();
 
+  const hitFaceImageId =
+    arguements.hitFaceImageIDs || arguements.hf || DEFAULT_FACE_IMAGE_URIS;
+
   return {
     help,
     deviceIDs,
     taskNames,
+    locations,
     siteNames,
     originTime,
     count: count > 0 ? count : 1,
     minutes: minutes > 0 ? minutes : 120,
   };
 };
+
+export function sleep(ms) {
+  return new Promise((resolve) => setTimeout(resolve, ms));
+}
