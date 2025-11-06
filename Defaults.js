@@ -54,3 +54,7 @@ export const DEFAULT_POST_SCENE_IMAGE_URLs = process.env.POST_SCENE_IMAGE_URLs
 export const DEFAULT_LOCATIONS = process.env.DEFAULT_LOCATIONS
   ? process.env.DEFAULT_LOCATIONS.split(",")
   : ["+24.521296+54.675052/"];
+
+  export const DEFAULT_CAMERA_SOURCE_IDS = process.env.DEFAULT_CAMERA_SOURCE_IDS
+    ? process.env.DEFAULT_CAMERA_SOURCE_IDS.split(",")
+    : ["10569617014264000"];

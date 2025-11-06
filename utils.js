@@ -6,6 +6,7 @@ import {
   DEFAULT_SITE_NAMES,
   DEFAULT_FACE_IMAGE_URIS,
   DEFAULT_LOCATIONS,
+  DEFAULT_CAMERA_SOURCE_IDS,
 } from "./Defaults.js";
 
 config();
@@ -105,6 +106,10 @@ export const getArguementsForGenerateMessage = (arguements) => {
   const hitFaceImageId =
     arguements.hitFaceImageIDs || arguements.hf || DEFAULT_FACE_IMAGE_URIS;
 
+  const cameraSourceIDs = arguements.cameraSourceIDs
+    ? arguements.cameraSourceIDs.split(",")
+    : DEFAULT_CAMERA_SOURCE_IDS;
+
   return {
     help,
     deviceIDs,
@@ -114,6 +119,7 @@ export const getArguementsForGenerateMessage = (arguements) => {
     originTime,
     count: count > 0 ? count : 1,
     minutes: minutes > 0 ? minutes : 120,
+    cameraSourceIDs,
   };
 };
 

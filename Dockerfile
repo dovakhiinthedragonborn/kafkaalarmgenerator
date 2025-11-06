@@ -17,4 +17,4 @@ COPY . .
 EXPOSE 3000
 
 # Set the entrypoint to your desired script
-ENTRYPOINT ["node", "continuosMessages.js"]
+ENTRYPOINT ["node", "continuousMessages.js"]
