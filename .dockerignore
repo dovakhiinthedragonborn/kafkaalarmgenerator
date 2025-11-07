@@ -6,3 +6,4 @@ docker-compose.yml
 .gitignore
 .vscode
 package-lock.json
+*.tar

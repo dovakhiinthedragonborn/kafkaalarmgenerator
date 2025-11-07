@@ -7,6 +7,10 @@ import {
   DEFAULT_FACE_IMAGE_URIS,
   DEFAULT_LOCATIONS,
   DEFAULT_CAMERA_SOURCE_IDS,
+  DEFAULT_HIT_FACE_IMAGE_URIs,
+  DEFAULT_SCENE_IMAGE_URIs,
+  DEFAULT_PRE_SCENE_IMAGE_URLs,
+  DEFAULT_POST_SCENE_IMAGE_URLs,
 } from "./Defaults.js";
 
 config();
@@ -120,6 +124,9 @@ export const getArguementsForGenerateMessage = (arguements) => {
     count: count > 0 ? count : 1,
     minutes: minutes > 0 ? minutes : 120,
     cameraSourceIDs,
+    hitFaceImageId,
+    preSceneImageUrl: DEFAULT_PRE_SCENE_IMAGE_URLs,
+    postSceneImageUrl: DEFAULT_POST_SCENE_IMAGE_URLs,
   };
 };
 
